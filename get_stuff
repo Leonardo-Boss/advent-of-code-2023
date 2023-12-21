@@ -1,0 +1,46 @@
+#! /bin/bash
+
+# Define the URL and cookie
+
+if [ $# -lt 1 ]; then
+	day=$(date +%-d)
+else
+	day=$1
+fi
+url=https://adventofcode.com/2023/day/$day/input
+cookie="session=53616c7465645f5f0f13507efab005d2b76594f0902875b9a6a560586f3bf755cd0f4bfe8c3fafd1d6842f6d65c8c21cae870de0c1b50e671d10c353f402b20d"
+
+# Get actual data
+response=$(curl -X GET "$url" --cookie "$cookie")
+echo "$response" > inputs/$day
+
+# Get training data
+url=https://adventofcode.com/2023/day/$day
+response=$(curl -X GET "$url" --cookie "$cookie")
+response=$(echo "$response" | sed  -z -n 's/.*<pre><code>\(.*\)<\/code><\/pre>.*/\1/p')
+echo "$response" > tests/$day
+
+
+# Create daily python file with boilerplate
+if [ ! -f "${day}a.py" ]; then
+cat <<EOF > "${day}a.py"
+with open("inputs/${day}", "r") as f:
+    data = f.readlines()
+
+with open("tests/${day}", "r") as f:
+    data = f.readlines()
+EOF
+fi
+
+# Create daily python file with boilerplate
+if [ ! -f "${day}b.py" ]; then
+cat <<EOF > "${day}b.py"
+with open("inputs/${day}", "r") as f:
+    data = f.readlines()
+
+with open("tests/${day}", "r") as f:
+    tdata = f.readlines()
+EOF
+fi
+
+xdg-open $url &
