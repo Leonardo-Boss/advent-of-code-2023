@@ -25,10 +25,10 @@ echo "$response" > tests/$day
 if [ ! -f "${day}a.py" ]; then
 cat <<EOF > "${day}a.py"
 with open("inputs/${day}", "r") as f:
-    data = f.readlines()
+    data = f.read().splitlines()
 
 with open("tests/${day}", "r") as f:
-    data = f.readlines()
+    data = f.read().splitlines()
 EOF
 fi
 
@@ -36,10 +36,10 @@ fi
 if [ ! -f "${day}b.py" ]; then
 cat <<EOF > "${day}b.py"
 with open("inputs/${day}", "r") as f:
-    data = f.readlines()
+    data = f.read().splitlines()
 
 with open("tests/${day}", "r") as f:
-    tdata = f.readlines()
+    data = f.read().splitlines()
 EOF
 fi
 
